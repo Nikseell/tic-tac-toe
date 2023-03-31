@@ -34,6 +34,8 @@ public class Board : MonoBehaviour
 
     private Mark _startMark;
 
+    public bool saveJson = false;
+
     private void Start()
     {
         marks = new Mark[9];
@@ -66,12 +68,20 @@ public class Board : MonoBehaviour
             {
                 winner.SetActive(true);
                 wonText.text = "IT'S A TIE!";
-                json.gameData.TotalGamesPlayed += 1;
+
+                if (saveJson)
+                {
+                    json.gameData.TotalGamesPlayed += 1;
+                }
+
                 SFX.instance.PlaySound(4);
 
                 if (playWithAI)
                 {
-                    json.gameData.TotalGamesPlayedWithAI += 1;
+                    if (saveJson)
+                    {
+                        json.gameData.TotalGamesPlayedWithAI += 1;
+                    }
                 }
             }
 
@@ -97,7 +107,10 @@ public class Board : MonoBehaviour
             SetWonText();
         }
 
-        PutDataIntoJson();
+        if (saveJson)
+        {
+            PutDataIntoJson();
+        }
     }
 
     private bool CheckCombinations()
